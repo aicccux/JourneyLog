@@ -13,4 +13,4 @@ data class LogEntry(
     @ColumnInfo(name = "photo3_name") val photo3: String? = null
 )
 
-const val MAX_NOTE_PHOTOS_LIMIT = 3
+const val MAX_LOG_PHOTOS_LIMIT = 3

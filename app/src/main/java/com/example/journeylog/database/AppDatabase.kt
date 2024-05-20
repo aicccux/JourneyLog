@@ -8,5 +8,5 @@ abstract class AppDatabase : RoomDatabase() {
     companion object{
         const val DB_NAME="journey-log"
     }
-    abstract fun getDao(): LogDao
+    abstract fun logDao(): LogDao
 }

@@ -15,7 +15,7 @@ class CameraViewModel : ViewModel() {
             initializer {
                 val savedStateHandle = createSavedStateHandle()
                 val myRepository = (this[APPLICATION_KEY] as JourneyLogApplication)
-                AddLogViewModel(
+                CameraViewModel(
 
                 )
             }

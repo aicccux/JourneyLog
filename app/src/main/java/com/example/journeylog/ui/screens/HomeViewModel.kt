@@ -14,21 +14,16 @@ import androidx.lifecycle.createSavedStateHandle
 import androidx.lifecycle.viewModelScope
 import androidx.lifecycle.viewmodel.initializer
 import androidx.lifecycle.viewmodel.viewModelFactory
-import androidx.room.Room
 import com.example.journeylog.JourneyLogApplication
 import com.example.journeylog.data.PhotoSaverRepository
 import com.example.journeylog.database.AppDatabase
-import com.example.journeylog.database.AppDatabase.Companion.DB_NAME
 import com.example.journeylog.database.Log
 import kotlinx.coroutines.launch
 
 class HomeViewModel(application: Application, private val photoSaver: PhotoSaverRepository) : ViewModel() {
     private val appContext: Context = application.applicationContext
 
-    private val db = Room.databaseBuilder(
-        appContext,
-        AppDatabase::class.java, DB_NAME
-    ).build()
+    private val db= AppDatabase.getDatabase(appContext)
 
     data class UiState(val loading: Boolean = true, val logs: List<Log> = emptyList())
 

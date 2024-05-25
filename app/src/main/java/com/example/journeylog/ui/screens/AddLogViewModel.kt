@@ -16,7 +16,6 @@ import androidx.lifecycle.createSavedStateHandle
 import androidx.lifecycle.viewModelScope
 import androidx.lifecycle.viewmodel.initializer
 import androidx.lifecycle.viewmodel.viewModelFactory
-import androidx.room.Room
 import com.example.journeylog.JourneyLogApplication
 import com.example.journeylog.data.MediaRepository
 import com.example.journeylog.data.PhotoSaverRepository
@@ -34,10 +33,7 @@ class AddLogViewModel(application: Application, private val photoSaver: PhotoSav
     ViewModel() {
     private val appContext: Context = application.applicationContext
     private val mediaRepository = MediaRepository(appContext)
-    private val db = Room.databaseBuilder(
-        appContext,
-        AppDatabase::class.java, AppDatabase.DB_NAME
-    ).build()
+    private val db = AppDatabase.getDatabase(appContext)
 
     data class UiState(
         val hasLocationAccess: Boolean,

@@ -11,7 +11,7 @@ import androidx.navigation.NavHostController
 @Composable
 fun HomeScreen(
     navController: NavHostController,
-//    viewModel: HomeViewModel = viewModel(factory = HomeViewModel.Factory)
+    viewModel: HomeViewModel = viewModel(factory = HomeViewModel.Factory)
 ) {
     Scaffold(modifier = Modifier, topBar = {}, floatingActionButton = {}) { paddingValues ->
         LazyColumn(modifier = Modifier.padding(paddingValues)) {

@@ -4,8 +4,8 @@ import androidx.room.ColumnInfo
 import androidx.room.Entity
 import androidx.room.PrimaryKey
 
-@Entity(tableName = "logs")
-data class LogEntry(
+@Entity(tableName = "log_table")
+class LogEntry(
     @PrimaryKey val date: String, // date format: yyyy-MM-dd
     @ColumnInfo(name = "place") val place: String,
     @ColumnInfo(name = "photo1_name") val photo1: String,

@@ -21,7 +21,7 @@ class PhotoSaverRepository(context: Context, private val contentResolver: Conten
 
     private fun generateFileName() = "${System.currentTimeMillis()}.jpg"
     private fun generatePhotoLogFile() = File(photoFolder, generateFileName())
-    private fun generatePhotoCacheFile() = File(cacheFolder, generateFileName())
+    fun generatePhotoCacheFile() = File(cacheFolder, generateFileName())
 
     fun cacheCapturedPhoto(photo: File) {
         if (_photos.size + 1 > MAX_LOG_PHOTOS_LIMIT) {

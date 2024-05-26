@@ -4,12 +4,7 @@ plugins {
     alias(libs.plugins.google.ksp)
     alias(libs.plugins.compose.compiler)
 }
-//composeCompiler {
-//    enableStrongSkippingMode = true
-//
-//    reportsDestination = layout.buildDirectory.dir("compose_compiler")
-//    stabilityConfigurationFile = rootProject.layout.projectDirectory.file("stability_config.conf")
-//}
+
 android {
     namespace = "com.example.journeylog"
     compileSdk = 34
@@ -58,6 +53,8 @@ android {
 
 dependencies {
     implementation(libs.androidx.room.ktx)
+    implementation(libs.play.services.location)
+    implementation(libs.coil.compose)
     annotationProcessor(libs.androidx.room.compiler)
     ksp(libs.androidx.room.compiler)
     implementation(libs.androidx.core.ktx)

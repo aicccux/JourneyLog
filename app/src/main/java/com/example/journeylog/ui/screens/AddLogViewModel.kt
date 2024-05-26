@@ -1,10 +1,13 @@
 package com.example.journeylog.ui.screens
 
 import android.Manifest
+import android.annotation.SuppressLint
 import android.app.Application
 import android.content.Context
 import android.content.pm.PackageManager
+import android.location.Geocoder
 import android.net.Uri
+import android.os.Build
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.setValue
@@ -20,6 +23,7 @@ import com.example.journeylog.JourneyLogApplication
 import com.example.journeylog.data.MediaRepository
 import com.example.journeylog.data.PhotoSaverRepository
 import com.example.journeylog.database.LogEntry
+import com.google.android.gms.location.LocationServices
 import kotlinx.coroutines.flow.map
 import kotlinx.coroutines.flow.toList
 import kotlinx.coroutines.launch
@@ -44,7 +48,7 @@ class AddLogViewModel(application: Application, private val photoSaver: PhotoSav
         val localPickerPhotos: List<Uri> = emptyList()
     )
 
-    private var uiState by mutableStateOf(
+    var uiState by mutableStateOf(
         UiState(
             hasLocationAccess = hasPermission(Manifest.permission.ACCESS_COARSE_LOCATION),
             hasCameraAccess = hasPermission(Manifest.permission.CAMERA),
@@ -53,7 +57,7 @@ class AddLogViewModel(application: Application, private val photoSaver: PhotoSav
         )
     )
 
-    private fun isValid(): Boolean {
+    fun isValid(): Boolean {
         return uiState.place != null && !photoSaver.isEmpty() && !uiState.isSaving
     }
 
@@ -95,7 +99,37 @@ class AddLogViewModel(application: Application, private val photoSaver: PhotoSav
     fun onDateChange(dateInMillis: Long) {
         uiState = uiState.copy(date = dateInMillis)
     }
+    // region Location management
+    @SuppressLint("MissingPermission")
+    fun fetchLocation() {
+        val fusedLocationClient = LocationServices.getFusedLocationProviderClient(appContext)
+        fusedLocationClient.lastLocation.addOnSuccessListener { location ->
+            location ?: return@addOnSuccessListener
 
+            val geocoder = Geocoder(appContext, Locale.getDefault())
+
+            if (Build.VERSION.SDK_INT >= 33)
+            {
+                geocoder.getFromLocation(location.latitude, location.longitude, 1) { addresses ->
+                    val address = addresses.firstOrNull()
+                    val place = address?.locality ?: address?.subAdminArea ?: address?.adminArea
+                    ?: address?.countryName
+                    uiState = uiState.copy(place = place)
+                }
+            }
+            else {
+                val address =
+                    geocoder.getFromLocation(location.latitude, location.longitude, 1)?.firstOrNull()
+                        ?: return@addOnSuccessListener
+                val place =
+                    address.locality ?: address.subAdminArea ?: address.adminArea ?: address.countryName
+                    ?: return@addOnSuccessListener
+
+                uiState = uiState.copy(place = place)
+            }
+        }
+    }
+    // endregion
     fun loadLocalPickerPictures() {
         viewModelScope.launch {
             val localPickerPhotos = mediaRepository.fetchImages().map { it.uri }.toList()

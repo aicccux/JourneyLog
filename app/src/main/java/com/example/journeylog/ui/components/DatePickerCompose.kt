@@ -17,7 +17,7 @@ import androidx.compose.ui.platform.LocalContext
 import java.util.Calendar
 
 @Composable
-fun DatePicker(timeInMillis: Long, onChange: (time: Long) -> Unit) {
+fun DatePickerCompose(timeInMillis: Long, onChange: (time: Long) -> Unit) {
     val context = LocalContext.current
     val calendar = Calendar.getInstance()
     calendar.timeInMillis = timeInMillis

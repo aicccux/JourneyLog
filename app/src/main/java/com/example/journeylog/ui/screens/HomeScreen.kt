@@ -39,7 +39,7 @@ fun HomeScreen(
     val scrollBehavior = TopAppBarDefaults.pinnedScrollBehavior()
     Scaffold(modifier = Modifier, topBar = {
         TopAppBar(
-            title = { Text("My Logs", fontFamily = FontFamily.Serif) },
+            title = { Text("Journey Logs", fontFamily = FontFamily.Serif) },
             scrollBehavior = scrollBehavior
         )
     }, floatingActionButton = {

@@ -1,12 +1,15 @@
 package com.example.journeylog.database
 
 import java.io.File
+import java.text.SimpleDateFormat
+import java.util.Locale
 
 data class Log(
     val date: String,
     val place: String,
     val photos: List<File>
 ) {
+    val timeInMillis = SimpleDateFormat("yyyy-MM-dd", Locale.US).parse(date)!!.time
     fun toLogEntry(): LogEntry {
         return LogEntry(
             date = date,

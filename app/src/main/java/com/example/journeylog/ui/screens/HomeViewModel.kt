@@ -27,13 +27,13 @@ class HomeViewModel(application: Application, private val photoSaver: PhotoSaver
 
     data class UiState(val loading: Boolean = true, val logs: List<Log> = emptyList())
 
-    private var uiState by mutableStateOf(UiState())
+    var uiState by mutableStateOf(UiState())
 
     fun formatDateTime(timeInMillis: Long): String {
         return DateUtils.formatDateTime(appContext, timeInMillis, DateUtils.FORMAT_ABBREV_ALL)
     }
 
-    private fun loadLogs() {
+    fun loadLogs() {
         viewModelScope.launch {
             uiState = uiState.copy(
                 loading = false,

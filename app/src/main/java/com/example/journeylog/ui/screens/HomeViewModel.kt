@@ -16,14 +16,14 @@ import androidx.lifecycle.viewmodel.initializer
 import androidx.lifecycle.viewmodel.viewModelFactory
 import com.example.journeylog.JourneyLogApplication
 import com.example.journeylog.data.PhotoSaverRepository
-import com.example.journeylog.database.AppDatabase
 import com.example.journeylog.database.Log
 import kotlinx.coroutines.launch
 
-class HomeViewModel(application: Application, private val photoSaver: PhotoSaverRepository) : ViewModel() {
+class HomeViewModel(application: Application, private val photoSaver: PhotoSaverRepository) :
+    ViewModel() {
     private val appContext: Context = application.applicationContext
 
-    private val db= AppDatabase.getDatabase(appContext)
+    private val dbDao = JourneyLogApplication.db.logDao()
 
     data class UiState(val loading: Boolean = true, val logs: List<Log> = emptyList())
 
@@ -37,14 +37,14 @@ class HomeViewModel(application: Application, private val photoSaver: PhotoSaver
         viewModelScope.launch {
             uiState = uiState.copy(
                 loading = false,
-                logs = db.logDao().getAllWithFiles(photoSaver.photoFolder)
+                logs = dbDao.getAllWithFiles(photoSaver.photoFolder)
             )
         }
     }
 
     fun delete(log: Log) {
         viewModelScope.launch {
-            db.logDao().delete(log.toLogEntry())
+            dbDao.delete(log.toLogEntry())
             loadLogs()
         }
     }

@@ -19,7 +19,6 @@ import androidx.lifecycle.viewmodel.viewModelFactory
 import com.example.journeylog.JourneyLogApplication
 import com.example.journeylog.data.MediaRepository
 import com.example.journeylog.data.PhotoSaverRepository
-import com.example.journeylog.database.AppDatabase
 import com.example.journeylog.database.LogEntry
 import kotlinx.coroutines.flow.map
 import kotlinx.coroutines.flow.toList
@@ -33,8 +32,7 @@ class AddLogViewModel(application: Application, private val photoSaver: PhotoSav
     ViewModel() {
     private val appContext: Context = application.applicationContext
     private val mediaRepository = MediaRepository(appContext)
-    private val db = AppDatabase.getDatabase(appContext)
-
+    private val dbDao = JourneyLogApplication.db.logDao()
     data class UiState(
         val hasLocationAccess: Boolean,
         val hasCameraAccess: Boolean,
@@ -154,7 +152,7 @@ class AddLogViewModel(application: Application, private val photoSaver: PhotoSav
                 photo3 = photos.getOrNull(2)?.name,
             )
 
-            db.logDao().insert(log)
+            dbDao.insert(log)
             uiState = uiState.copy(isSaved = true)
         }
     }

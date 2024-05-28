@@ -16,7 +16,6 @@ import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.automirrored.filled.ArrowBack
-import androidx.compose.material.icons.filled.Add
 import androidx.compose.material.icons.filled.Check
 import androidx.compose.material3.ButtonDefaults
 import androidx.compose.material3.CircularProgressIndicator
@@ -155,30 +154,33 @@ fun AddLogScreen(
     }
     // endregion
 
-    Scaffold(snackbarHost = { SnackbarHost(snackBarHostState) }, topBar = {
-        TopAppBar(title = { Text("Add Log", fontFamily = FontFamily.Serif) }, navigationIcon = {
-            if (navController.previousBackStackEntry != null) {
-                IconButton(onClick = { navController.navigateUp() }) {
-                    Icon(
-                        imageVector = Icons.AutoMirrored.Filled.ArrowBack,
-                        contentDescription = "Back"
-                    )
+    Scaffold(
+        snackbarHost = { SnackbarHost(snackBarHostState) },
+        topBar = {
+            TopAppBar(title = { Text("Add Log", fontFamily = FontFamily.Serif) }, navigationIcon = {
+                if (navController.previousBackStackEntry != null) {
+                    IconButton(onClick = { navController.navigateUp() }) {
+                        Icon(
+                            imageVector = Icons.AutoMirrored.Filled.ArrowBack,
+                            contentDescription = "Back"
+                        )
+                    }
                 }
-            }
-        })
-    }, floatingActionButton = {
-        ExtendedFloatingActionButton(text = { Text("Save log") }, icon = {
-            if (state.isSaving) {
-                CircularProgressIndicator(Modifier.size(24.0.dp))
-            } else {
-                Icon(Icons.Filled.Check, null)
-            }
-        }, onClick = {
-            canSaveLog {
-                viewModel.createLog()
-            }
-        })
-    }) { innerPadding ->
+            })
+        },
+        floatingActionButton = {
+            ExtendedFloatingActionButton(text = { Text("Save log") }, icon = {
+                if (state.isSaving) {
+                    CircularProgressIndicator(Modifier.size(24.0.dp))
+                } else {
+                    Icon(Icons.Filled.Check, null)
+                }
+            }, onClick = {
+                canSaveLog {
+                    viewModel.createLog()
+                }
+            })
+        }) { innerPadding ->
         Column(
             modifier = Modifier
                 .padding(innerPadding)
@@ -226,7 +228,10 @@ fun AddLogScreen(
                             }
                         }
                     }) {
-                        Icon(painter = painterResource(id = R.drawable.baseline_add_photo_alternate_24), null)
+                        Icon(
+                            painter = painterResource(id = R.drawable.baseline_add_photo_alternate_24),
+                            null
+                        )
                         Spacer(Modifier.size(ButtonDefaults.IconSpacing))
                         Text("Add photo")
                     }
@@ -245,7 +250,10 @@ fun AddLogScreen(
                             }
                         }
                     }) {
-                        Icon(painter = painterResource(id = R.drawable.baseline_add_a_photo_24), null)
+                        Icon(
+                            painter = painterResource(id = R.drawable.baseline_add_a_photo_24),
+                            null
+                        )
                     }
                     // endregion
                 }

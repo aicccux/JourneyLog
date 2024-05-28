@@ -18,7 +18,6 @@ import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.automirrored.filled.ArrowBack
 import androidx.compose.material.icons.filled.Add
 import androidx.compose.material.icons.filled.Check
-import androidx.compose.material.icons.filled.ShoppingCart
 import androidx.compose.material3.ButtonDefaults
 import androidx.compose.material3.CircularProgressIndicator
 import androidx.compose.material3.ExperimentalMaterial3Api
@@ -42,11 +41,13 @@ import androidx.compose.runtime.rememberCoroutineScope
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.platform.LocalContext
+import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.text.font.FontFamily
 import androidx.compose.ui.unit.dp
 import androidx.core.app.ActivityCompat
 import androidx.lifecycle.viewmodel.compose.viewModel
 import androidx.navigation.NavHostController
+import com.example.journeylog.R
 import com.example.journeylog.database.MAX_LOG_PHOTOS_LIMIT
 import com.example.journeylog.ui.Screens
 import com.example.journeylog.ui.components.CameraExplanationDialog
@@ -106,7 +107,7 @@ fun AddLogScreen(
     val requestLocationPermissions =
         rememberLauncherForActivityResult(ActivityResultContracts.RequestPermission()) { isGranted ->
             if (isGranted) {
-                viewModel.onPermissionChange(Manifest.permission.ACCESS_COARSE_LOCATION, isGranted)
+                viewModel.onPermissionChange(Manifest.permission.ACCESS_FINE_LOCATION, isGranted)
                 viewModel.fetchLocation()
             } else {
                 coroutineScope.launch {
@@ -118,7 +119,7 @@ fun AddLogScreen(
     var showExplanationDialogForLocationPermission by remember { mutableStateOf(false) }
     if (showExplanationDialogForLocationPermission) {
         LocationExplanationDialog(onConfirm = {
-            requestLocationPermissions.launch(Manifest.permission.ACCESS_COARSE_LOCATION)
+            requestLocationPermissions.launch(Manifest.permission.ACCESS_FINE_LOCATION)
             showExplanationDialogForLocationPermission = false
         }, onDismiss = { showExplanationDialogForLocationPermission = false })
     }
@@ -199,10 +200,10 @@ fun AddLogScreen(
                     when {
                         state.hasLocationAccess -> viewModel.fetchLocation()
                         ActivityCompat.shouldShowRequestPermissionRationale(
-                            context.getActivity(), Manifest.permission.ACCESS_COARSE_LOCATION
+                            context.getActivity(), Manifest.permission.ACCESS_FINE_LOCATION
                         ) -> showExplanationDialogForLocationPermission = true
 
-                        else -> requestLocationPermissions.launch(Manifest.permission.ACCESS_COARSE_LOCATION)
+                        else -> requestLocationPermissions.launch(Manifest.permission.ACCESS_FINE_LOCATION)
                     }
                 }
             })
@@ -225,7 +226,7 @@ fun AddLogScreen(
                             }
                         }
                     }) {
-                        Icon(Icons.Filled.ShoppingCart, null)
+                        Icon(painter = painterResource(id = R.drawable.baseline_add_photo_alternate_24), null)
                         Spacer(Modifier.size(ButtonDefaults.IconSpacing))
                         Text("Add photo")
                     }
@@ -244,7 +245,7 @@ fun AddLogScreen(
                             }
                         }
                     }) {
-                        Icon(Icons.Filled.Add, null)
+                        Icon(painter = painterResource(id = R.drawable.baseline_add_a_photo_24), null)
                     }
                     // endregion
                 }

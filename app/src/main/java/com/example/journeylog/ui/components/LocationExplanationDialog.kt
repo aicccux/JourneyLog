@@ -9,6 +9,8 @@ import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Text
 import androidx.compose.material3.TextButton
 import androidx.compose.runtime.Composable
+import androidx.compose.ui.res.painterResource
+import com.example.journeylog.R
 
 @Composable
 fun LocationExplanationDialog(onConfirm: () -> Unit, onDismiss: () -> Unit) {
@@ -18,7 +20,7 @@ fun LocationExplanationDialog(onConfirm: () -> Unit, onDismiss: () -> Unit) {
         text = { Text("PhotoLog would like access to your location to save it when creating a log") },
         icon = {
             Icon(
-                Icons.Filled.Place,
+                painter = painterResource(id = R.drawable.outline_location_off_24),
                 contentDescription = null,
                 tint = MaterialTheme.colorScheme.surfaceTint
             )
